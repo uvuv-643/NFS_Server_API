@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\FSController;
+use App\Http\Controllers\UserTokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/list', [FSController::class, 'list']);
+Route::get('/create', [FSController::class, 'create']);
+Route::get('/read', [FSController::class, 'read']);
+Route::get('/write', [FSController::class, 'write']);
+Route::get('/link', [FSController::class, 'link']);
+Route::get('/unlink', [FSController::class, 'unlink']);
+Route::get('/rmdir', [FSController::class, 'rmdir']);
+Route::get('/lookup', [FSController::class, 'lookup']);
+
+// b4b18a03-c9a4-4b50-b979-a91760658168
+Route::get('/token', [UserTokenController::class, 'store']);

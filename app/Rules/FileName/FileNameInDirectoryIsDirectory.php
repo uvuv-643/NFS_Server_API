@@ -1,6 +1,8 @@
 <?php
 
+namespace App\Rules\FileName;
 
+use Closure;
 use App\Models\Node;
 use App\Rules\FileNameAbstractRule;
 use Illuminate\Translation\PotentiallyTranslatedString;

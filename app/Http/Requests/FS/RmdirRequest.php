@@ -2,31 +2,25 @@
 
 namespace App\Http\Requests\FS;
 
-use app\Rules\Inode\InodeIsDirectory;
-use app\Rules\Inode\InodeIssetRule;
-use FileNameExistsInDirectory;
-use FileNameInDirectoryIsDirectory;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FSAbstractRequest;
+use App\Rules\Inode\InodeIsDirectory;
+use App\Rules\Inode\InodeIssetRule;
+use App\Rules\FileName\FileNameExistsInDirectory;
+use App\Rules\FileName\FileNameInDirectoryIsDirectory;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
  * @property $token string
  * @property $parent integer
  * @property $name string
  */
-class RmdirRequest extends FormRequest
+class RmdirRequest extends FSAbstractRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {

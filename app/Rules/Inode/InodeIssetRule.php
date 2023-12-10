@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Rules\Inode;
+namespace App\Rules\Inode;
 
 use App\Rules\InodeAbstractRule;
 use Closure;

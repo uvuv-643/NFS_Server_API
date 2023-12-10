@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Rules\FileName;
 
 use App\Models\Node;
 use App\Rules\FileNameAbstractRule;
+use Closure;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
 class FileNameExistsInDirectory extends FileNameAbstractRule

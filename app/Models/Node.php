@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property $id integer
  * @property $user_id_token integer
  * @property $inode integer
  * @property $name string

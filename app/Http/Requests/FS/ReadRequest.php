@@ -2,24 +2,17 @@
 
 namespace App\Http\Requests\FS;
 
-use app\Rules\Inode\InodeIsFile;
-use app\Rules\Inode\InodeIssetRule;
+use App\Http\Requests\FSAbstractRequest;
+use App\Rules\Inode\InodeIsFile;
+use App\Rules\Inode\InodeIssetRule;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property $token string
  * @property $inode integer
  */
-class ReadRequest extends FormRequest
+class ReadRequest extends FSAbstractRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.

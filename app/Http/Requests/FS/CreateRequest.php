@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\FS;
 
-use app\Rules\Inode\DirectoryIsNotFull;
-use app\Rules\Inode\InodeIsDirectory;
-use app\Rules\Inode\InodeIssetRule;
-use FileNameNotExistsInDirectory;
+use App\Http\Requests\FSAbstractRequest;
+use App\Rules\Inode\DirectoryIsNotFull;
+use App\Rules\Inode\InodeIsDirectory;
+use App\Rules\Inode\InodeIssetRule;
+use App\Rules\FileName\FileNameNotExistsInDirectory;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
 /**
@@ -16,15 +19,8 @@ use Illuminate\Validation\Rule;
  * @property $name string
  * @property $type string
  */
-class CreateRequest extends FormRequest
+class CreateRequest extends FSAbstractRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -50,4 +46,5 @@ class CreateRequest extends FormRequest
             ]
         ];
     }
+
 }

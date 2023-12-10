@@ -11,10 +11,10 @@ use Closure;
 class FileNameAbstractRule extends InodeAbstractRule
 {
 
-    public string $token;
-    public int $parent;
+    public ?string $token;
+    public ?int $parent;
 
-    public function __construct(string $token, int $parent)
+    public function __construct(?string $token, ?int $parent)
     {
         parent::__construct($token);
         $this->parent = $parent;

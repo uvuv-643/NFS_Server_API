@@ -14,9 +14,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class InodeAbstractRule implements ValidationRule
 {
 
-    public string $token;
+    public ?string $token;
 
-    public function __construct(string $token)
+    public function __construct(?string $token)
     {
         $this->token = $token;
     }

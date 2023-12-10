@@ -2,26 +2,19 @@
 
 namespace App\Http\Requests\FS;
 
-use app\Rules\Inode\InodeIsDirectory;
-use app\Rules\Inode\InodeIssetRule;
-use FileNameExistsInDirectory;
+use App\Http\Requests\FSAbstractRequest;
+use App\Rules\Inode\InodeIsDirectory;
+use App\Rules\Inode\InodeIssetRule;
+use App\Rules\FileName\FileNameExistsInDirectory;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property $token string
  * @property $parent integer
  * @property $name string
  */
-class LookupRequest extends FormRequest
+class LookupRequest extends FSAbstractRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.

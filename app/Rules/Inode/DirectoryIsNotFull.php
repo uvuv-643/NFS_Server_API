@@ -1,9 +1,9 @@
 <?php
 
-namespace app\Rules\Inode;
+namespace App\Rules\Inode;
 
-use App\Rules\InodeAbstractRule;
 use Closure;
+use App\Rules\InodeAbstractRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
 class DirectoryIsNotFull extends InodeAbstractRule

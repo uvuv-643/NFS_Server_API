@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\FS;
 
-use app\Rules\Inode\DirectoryIsNotFull;
-use app\Rules\Inode\InodeIsDirectory;
-use app\Rules\Inode\InodeIsFile;
-use app\Rules\Inode\InodeIssetRule;
-use FileNameNotExistsInDirectory;
+use App\Http\Requests\FSAbstractRequest;
+use App\Rules\Inode\DirectoryIsNotFull;
+use App\Rules\Inode\InodeIsDirectory;
+use App\Rules\Inode\InodeIsFile;
+use App\Rules\Inode\InodeIssetRule;
+use App\Rules\FileName\FileNameNotExistsInDirectory;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property $token string
@@ -16,15 +16,8 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property $parent integer
  * @property $name string
  */
-class LinkRequest extends FormRequest
+class LinkRequest extends FSAbstractRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -52,4 +45,5 @@ class LinkRequest extends FormRequest
             ]
         ];
     }
+
 }

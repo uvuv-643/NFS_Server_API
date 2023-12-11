@@ -267,7 +267,7 @@ class FSController extends Controller
                 ]
             ]);
         } else {
-            $response = pack('P', self::RESPONSE_SUCCESS,);
+            $response = pack('P', self::RESPONSE_SUCCESS);
             $response .= pack('a8', $node->type == 'file' ? 'f' : 'd');
             $response .= pack('P', $node->inode);
             return response()->withHeaders([

@@ -7,7 +7,7 @@ use App\Models\Node;
 use App\Rules\FileNameAbstractRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class FileNameNotExistsInDirectory extends FileNameAbstractRule
+class FileNameInDirectoryIsFile extends FileNameAbstractRule
 {
 
     /**
@@ -22,9 +22,12 @@ class FileNameNotExistsInDirectory extends FileNameAbstractRule
             $elementsWithSameFileName = $targetNode->children->filter(function (Node $node) use ($value) {
                 return $node->name == $value;
             });
-            if (!$elementsWithSameFileName->count()) return;
+            if ($elementsWithSameFileName->count()) {
+                $targetElement = $elementsWithSameFileName->first();
+                if ($targetElement->type == 'file') return;
+            }
         }
-        $fail('File with same file name already exists in given directory');
+        $fail('File with given file name is not a file');
     }
 
 }

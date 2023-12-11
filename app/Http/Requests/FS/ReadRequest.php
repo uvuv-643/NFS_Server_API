@@ -24,6 +24,7 @@ class ReadRequest extends FSAbstractRequest
         return [
             'inode' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsFile($this->token),
             ],

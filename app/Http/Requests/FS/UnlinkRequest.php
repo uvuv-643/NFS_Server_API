@@ -3,6 +3,7 @@
 namespace App\Http\Requests\FS;
 
 use App\Http\Requests\FSAbstractRequest;
+use App\Rules\FileName\FileNameInDirectoryIsFile;
 use App\Rules\Inode\InodeIsDirectory;
 use App\Rules\Inode\InodeIssetRule;
 use App\Rules\FileName\FileNameExistsInDirectory;
@@ -26,6 +27,7 @@ class UnlinkRequest extends FSAbstractRequest
         return [
             'parent' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsDirectory($this->token),
             ],
@@ -33,6 +35,7 @@ class UnlinkRequest extends FSAbstractRequest
                 'required',
                 'max:255',
                 new FileNameExistsInDirectory($this->token, $this->parent),
+                new FileNameInDirectoryIsFile($this->token, $this->parent),
             ]
         ];
     }

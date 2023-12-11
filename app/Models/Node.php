@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property $id integer
- * @property $user_id_token integer
- * @property $inode integer
- * @property $name string
- * @property $type string
- * @property $parent_id integer
- * @property $hard_link_id integer
- * @property $children Collection
+ * @property int $id
+ * @property int $user_id_token
+ * @property int $inode
+ * @property string $name
+ * @property string $content
+ * @property string $type
+ * @property int $parent_id
+ * @property int $hard_link_id
+ * @property Collection $children
  */
 class Node extends Model
 {

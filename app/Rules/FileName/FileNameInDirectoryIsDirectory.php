@@ -20,14 +20,14 @@ class FileNameInDirectoryIsDirectory extends FileNameAbstractRule
         $targetNode = $this->getNode($this->parent);
         if ($targetNode && $targetNode->type == 'directory') {
             $elementsWithSameFileName = $targetNode->children->filter(function (Node $node) use ($value) {
-                return $node->type == 'file' && $node->name == $value;
+                return $node->name == $value;
             });
             if ($elementsWithSameFileName->count()) {
                 $targetElement = $elementsWithSameFileName->first();
                 if ($targetElement->type == 'directory') return;
             }
         }
-        $fail('File with given file name is not directory');
+        $fail('File with given file name is not a directory');
     }
 
 }

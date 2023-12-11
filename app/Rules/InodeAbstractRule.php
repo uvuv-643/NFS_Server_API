@@ -21,7 +21,7 @@ class InodeAbstractRule implements ValidationRule
         $this->token = $token;
     }
 
-    protected function getNode(int $inode) : Node | null
+    protected function getNode(string $inode) : Node | null
     {
         /** @var UserToken $userToken */
         /** @var Node | null $targetNode */

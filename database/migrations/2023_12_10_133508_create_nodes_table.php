@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('nodes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_token_id')->constrained();
-            $table->integer('inode')->nullable();
+            $table->bigInteger('inode')->nullable();
             $table->string('name', 255);
+            $table->string('content', 512)->nullable();
             $table->enum('type', ['directory', 'file']);
             $table->foreignId('parent_id')->nullable()->constrained('nodes');
             $table->foreignId('hard_link_id')->nullable()->constrained('nodes');

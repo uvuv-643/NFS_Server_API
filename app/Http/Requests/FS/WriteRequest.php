@@ -3,8 +3,8 @@
 namespace App\Http\Requests\FS;
 
 use App\Http\Requests\FSAbstractRequest;
-use app\Rules\Inode\InodeIsFile;
-use app\Rules\Inode\InodeIssetRule;
+use App\Rules\Inode\InodeIsFile;
+use App\Rules\Inode\InodeIssetRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
@@ -25,6 +25,7 @@ class WriteRequest extends FSAbstractRequest
         return [
             'inode' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsFile($this->token),
             ],

@@ -24,6 +24,7 @@ class ListRequest extends FSAbstractRequest
         return [
             'inode' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsDirectory($this->token),
             ]

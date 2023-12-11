@@ -32,6 +32,7 @@ class CreateRequest extends FSAbstractRequest
         return [
             'parent' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsDirectory($this->token),
                 new DirectoryIsNotFull($this->token),

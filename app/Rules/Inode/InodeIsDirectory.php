@@ -17,7 +17,7 @@ class InodeIsDirectory extends InodeAbstractRule
     {
         $targetNode = $this->getNode($value);
         if ($targetNode && $targetNode->type == 'directory') return;
-        $fail('Inode must be a directory');
+        $fail('Inode must be a directory, not a file');
     }
 
 }

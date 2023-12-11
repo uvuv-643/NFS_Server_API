@@ -29,11 +29,13 @@ class LinkRequest extends FSAbstractRequest
         return [
             'source' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsFile($this->token),
             ],
             'parent' => [
                 'required',
+                'integer',
                 new InodeIssetRule($this->token),
                 new InodeIsDirectory($this->token),
                 new DirectoryIsNotFull($this->token),

@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Models\UserToken;
 use App\Rules\FileName\FileNameExistsInDirectory;
+use App\Rules\FileName\FileNameInDirectoryIsDirectory;
+use App\Rules\FileName\FileNameInDirectoryIsFile;
 use App\Rules\FileName\FileNameNotExistsInDirectory;
 use App\Rules\Inode\DirectoryIsEmpty;
 use App\Rules\Inode\DirectoryIsNotFull;
@@ -22,8 +24,8 @@ use Illuminate\Http\JsonResponse;
 class FSAbstractRequest extends FormRequest
 {
 
-    const RESPONSE_MISSED_REQUIRED = -1;
-    const RESPONSE_SUCCESS = 0;
+    const RESPONSE_MISSED_REQUIRED = 3303;
+    const RESPONSE_TOKEN_INCORRECT = 41010;
     const RESPONSE_INODE_NOT_FOUND = 1;
     const RESPONSE_INODE_IS_NOT_FILE = 2;
     const RESPONSE_INODE_IS_NOT_DIRECTORY = 3;
@@ -48,12 +50,22 @@ class FSAbstractRequest extends FormRequest
      */
     public function failedAuthorization(): JsonResponse
     {
-        throw new HttpResponseException(
-            response()->json([
-                'status' => -1,
-                'response' => 'API token is not correct'
-            ], 422)
-        );
+        if ($this->input('json')) {
+            throw new HttpResponseException(
+                response()->json([
+                    'status' => -1,
+                    'response' => 'API token is not correct'
+                ], 422)
+            );
+        } else {
+            throw new HttpResponseException(
+                response(pack('P', self::RESPONSE_TOKEN_INCORRECT))->withHeaders([
+                    'Content-Type' => 'application/octet-stream',
+                    'Content-Length' => 8
+                ])
+            );
+        }
+
     }
 
     protected function failValidationWithStatus(int $status, Validator $validator)
@@ -62,13 +74,21 @@ class FSAbstractRequest extends FormRequest
             ->map(function (array $item) {
                 return $item[0];
             });
-
-        throw new HttpResponseException(
-            response()->json([
-                'status' => $status,
-                'errors' => $actualErrors
-            ], 400)
-        );
+        if ($this->input('json')) {
+            throw new HttpResponseException(
+                response()->json([
+                    'status' => $status,
+                    'error' => $actualErrors->first()
+                ], 400)
+            );
+        } else {
+            throw new HttpResponseException(
+                response(pack('P', $status))->withHeaders([
+                    'Content-Type' => 'application/octet-stream',
+                    'Content-Length' => 8
+                ])
+            );
+        }
     }
 
 
@@ -121,6 +141,16 @@ class FSAbstractRequest extends FormRequest
             $this->failValidationWithStatus(self::RESPONSE_FILE_NAME_LIMIT, $validator);
         }
 
+        if (isset($failed['name'][FileNameInDirectoryIsFile::class])) {
+            // 2 — Объект не является файлом.
+            $this->failValidationWithStatus(self::RESPONSE_INODE_IS_NOT_FILE, $validator);
+        }
+
+        if (isset($failed['name'][FileNameInDirectoryIsDirectory::class])) {
+            // 3 — Объект не является директорией.
+            $this->failValidationWithStatus(self::RESPONSE_INODE_IS_NOT_DIRECTORY, $validator);
+        }
+
         $this->failValidationWithStatus(self::RESPONSE_MISSED_REQUIRED, $validator);
 
     }
@@ -128,7 +158,7 @@ class FSAbstractRequest extends FormRequest
     protected function passedValidation(): void
     {
         $this->merge([
-            'user_token_id' => UserToken::query()->where('token', $this->token)->first()
+            'user_token_id' => UserToken::query()->where('token', $this->token)->first()->id
         ]);
     }
 

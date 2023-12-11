@@ -20,7 +20,7 @@ class FileNameExistsInDirectory extends FileNameAbstractRule
         $targetNode = $this->getNode($this->parent);
         if ($targetNode && $targetNode->type == 'directory') {
             $elementsWithSameFileName = $targetNode->children->filter(function (Node $node) use ($value) {
-                return $node->type == 'file' && $node->name == $value;
+                return $node->name == $value;
             });
             if ($elementsWithSameFileName->count()) return;
         }

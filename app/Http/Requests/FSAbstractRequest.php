@@ -53,7 +53,7 @@ class FSAbstractRequest extends FormRequest
         if ($this->input('json')) {
             throw new HttpResponseException(
                 response()->json([
-                    'status' => -1,
+                    'status' => self::RESPONSE_TOKEN_INCORRECT,
                     'response' => 'API token is not correct'
                 ], 422)
             );
@@ -157,8 +157,10 @@ class FSAbstractRequest extends FormRequest
 
     protected function passedValidation(): void
     {
+        /** @var UserToken $userToken */
+        $userToken = UserToken::query()->where('token', $this->token)->first();
         $this->merge([
-            'user_token_id' => UserToken::query()->where('token', $this->token)->first()->id
+            'user_token_id' => $userToken->id
         ]);
     }
 

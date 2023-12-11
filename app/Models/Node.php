@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Node extends Model
 {
-    use HasFactory;
 
     protected $guarded = [];
 

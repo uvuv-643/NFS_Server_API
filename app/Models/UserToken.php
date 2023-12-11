@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserToken extends Model
 {
-    use HasFactory;
     protected $guarded = [];
 
 }

@@ -22,6 +22,9 @@ class FSController extends Controller
     const RESPONSE_SUCCESS = 0;
     const RESPONSE_FAILURE = 5501;
 
+    const DT_DIR = 4;
+    const DT_FILE = 8;
+
     public function list(FSService $service, ListRequest $request): JsonResponse|Response
     {
         $entries = Node::query()
@@ -33,16 +36,16 @@ class FSController extends Controller
             return response()->json([
                 'status' => self::RESPONSE_SUCCESS,
                 'response' => [
-                    'entries' => [
+               //     'entries' => [
                         'entries_count' => $entries->count(),
                         'entries' => $entries->map(function (Node $entry) {
                             return [
-                                'entry_type' => $entry->type == 'file' ? 'f' : 'd',
+                                'entry_type' => $entry->type == 'file' ? self::DT_FILE : self::DT_DIR,
                                 'ino' => $entry->inode,
                                 'name' => $entry->name
                             ];
                         })
-                    ]
+              //      ]
                 ]
             ]);
         } else {
@@ -50,7 +53,7 @@ class FSController extends Controller
             for ($entryIndex = 0; $entryIndex < 16; $entryIndex++) {
                 if ($entryIndex < $entries->count()) {
                     $entry = $entries[$entryIndex];
-                    $response .= pack('a8', $entry->type == 'file' ? 'f' : 'd');
+                    $response .= pack('P', $entry->type == 'file' ? self::DT_FILE : self::DT_DIR);
                     $response .= pack('P', $entry->inode);
                     $response .= pack('a256', $entry->name);
                 } else {
@@ -80,7 +83,7 @@ class FSController extends Controller
         try {
             $node = Node::query()->create([
                 'user_token_id' => $request->user_token_id,
-                'inode' => random_int(0, PHP_INT_MAX),
+                'inode' => random_int(0, pow(2, 31)),
                 'name' => $request->name,
                 'type' => $request->type,
                 'parent_id' => $parent->id
@@ -102,9 +105,7 @@ class FSController extends Controller
         if ($request->input('json')) {
             return response()->json([
                 'status' => self::RESPONSE_SUCCESS,
-                'response' => [
-                    'ino' => $node->inode
-                ]
+                'response' => $node->inode
             ]);
         } else {
             return response(pack('PP', self::RESPONSE_FAILURE, $node->inode))->withHeaders([
@@ -133,7 +134,7 @@ class FSController extends Controller
                 ]
             ]);
         } else {
-            $response = pack('PPc*', self::RESPONSE_SUCCESS, strlen($node->content), $node->content);
+            $response = pack('PPa512', self::RESPONSE_SUCCESS, strlen($node->content), $node->content);
             return response($response)->withHeaders([
                 'Content-Type' => 'application/octet-stream',
                 'Content-Length' => strlen($response)
@@ -260,17 +261,17 @@ class FSController extends Controller
             return response()->json([
                 'status' => self::RESPONSE_SUCCESS,
                 'response' => [
-                    'entry_info' => [
-                        'entry_type' => $node->type == 'file' ? 'f' : 'd',
+                    //'entry_info' => [
+                        'entry_type' => $node->type == 'file' ? self::DT_FILE : self::DT_DIR,
                         'ino' => $node->inode
-                    ]
+                    //]
                 ]
             ]);
         } else {
             $response = pack('P', self::RESPONSE_SUCCESS);
-            $response .= pack('a8', $node->type == 'file' ? 'f' : 'd');
+            $response .= pack('P', $node->type == 'file' ? self::DT_FILE : self::DT_DIR);
             $response .= pack('P', $node->inode);
-            return response()->withHeaders([
+            return response($response)->withHeaders([
                 'Content-Type' => 'application/octet-stream',
                 'Content-Length' => strlen($response)
             ]);

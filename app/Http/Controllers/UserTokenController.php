@@ -15,7 +15,7 @@ class UserTokenController extends Controller
 
     const RESPONSE_SUCCESS = 0;
     const RESPONSE_FAILURE = -1;
-    const USER_TOKEN_LIMIT = 5;
+    const USER_TOKEN_LIMIT = 500;
 
     public function store(Request $request): JsonResponse
     {
